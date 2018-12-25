@@ -316,7 +316,7 @@ def test():
 
     seqpairs = [("".join(map(str.strip, open(sys.argv[1]).readlines()[1:])),
                 "".join(map(str.strip, open(sys.argv[2]).readlines()[1:])))]
-    print(seqpairs)
+    logging.debug(seqpairs)
 
     for seq1, seq2 in seqpairs:
         alignedQuery, alignedSubject = nw(seq1, seq2, imatrix, openCost, extendCost)
