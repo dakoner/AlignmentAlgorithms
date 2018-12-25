@@ -333,10 +333,11 @@ def main():
 def test():
     global debug
     debug = 0
-    openCost = 12
-    extendCost = 2
-    imatrix = matrix.makeIdentity(2, -1)
-    # imatrix = matrix.blosum50
+    openCost = 10
+    extendCost = 0.5
+
+    #imatrix = matrix.makeIdentity(2, -1)
+    imatrix = matrix.blosum50
 
     seqpairs = [("".join(map(string.strip, open(sys.argv[1]).readlines()[1:])),
                 "".join(map(string.strip, open(sys.argv[2]).readlines()[1:])))]
