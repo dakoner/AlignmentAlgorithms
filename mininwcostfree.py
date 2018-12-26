@@ -1,9 +1,11 @@
 ## a miniature implementation of Needleman Wunsch algorithm using three
 ## matrices M, Ix, Iy, and a backtrace matrix
 
-import sys, matrix, getopt
+import sys
+import argparse
 import logging
 import io
+import matrix
 
 logger = logging.getLogger('mininwcostfree')
 logger.setLevel(logging.INFO)
@@ -280,55 +282,20 @@ def main():
     subjectFile = None
     openCost = 12
     extendCost = 2
-    global debug
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], "q:s:o:e:d",["query=", "subject=","openCost=","extendCost=","debug="])
-    except getopt.GetoptError(what):
-        raise RuntimeError("usage: %s" % str(what))
+    parser = argparse.ArgumentParser("Parse alginment arguments")
+    parser.add_argument('queryFile', type=str, default=None)
+    parser.add_argument('subjectFile', type=str, default=None)
+    parser.add_argument('-o', '--openCost', type=float, default=10)
+    parser.add_argument('-e', '--extendCost', type=float, default=0.5)
+    #     if o in ('-d', 'debug'):
+    #         debug = 1
+    args = parser.parse_args()
 
-    for o, a in opts:
-
-        if o in ('-q', 'query'):
-            queryFile = a
-        if o in ('-s', 'subject'):
-            subjectFile = a
-        if o in ('-o', 'openCost'):
-            openCost = int(a)
-        if o in ('-e', 'extendCost'):
-            extendCost = int(a)
-        if o in ('-d', 'debug'):
-            debug = 1
-
-    if not queryFile or not subjectFile:
+    if not args.queryFile or not args.subjectFile:
         raise RuntimeError("No query or subject sequence supplied")
  
-    alignedQuery, alignedSubject = nw(readFASTA(queryFile), readFASTA(subjectFile),  matrix.blosum50, openCost, extendCost)
+    alignedQuery, alignedSubject = nw(readFASTA(args.queryFile), readFASTA(args.subjectFile),  matrix.blosum50, args.openCost, args.extendCost)
     printFASTA(queryFile, alignedQuery, subjectFile, alignedSubject)
 
-def test():
-    global debug
-    debug = 0
-    openCost = 10
-    extendCost = 0.5
-
-    #imatrix = matrix.makeIdentity(2, -1)
-    imatrix = matrix.blosum50
-
-    seqpairs = [("".join(map(str.strip, open(sys.argv[1]).readlines()[1:])),
-                "".join(map(str.strip, open(sys.argv[2]).readlines()[1:])))]
-    logging.debug(seqpairs)
-
-    for seq1, seq2 in seqpairs:
-        alignedQuery, alignedSubject = nw(seq1, seq2, imatrix, openCost, extendCost)
-
-        printFASTA("seq1", alignedQuery, "seq2", alignedSubject)
-
-        if alignedQuery.replace("-", "") != seq1:
-            print("First sequence was mangled")
-        if alignedSubject.replace("-", "") != seq2:
-            print("Second sequence was mangled")
-        print
-
 if __name__ == '__main__':
-    test()
-##     main()
+    main()
