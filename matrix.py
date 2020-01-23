@@ -22,7 +22,7 @@ def read_matrix(filename):
       aa_col = line[0]
       vals = line[1:].split()
       for i, val in enumerate(vals):
-        matrix[aa_row[i], aa_col] = val
+        matrix[aa_row[i], aa_col] = int(val)
 
   return matrix
 

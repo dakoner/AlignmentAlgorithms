@@ -285,8 +285,8 @@ def main():
     parser = argparse.ArgumentParser("Parse alginment arguments")
     parser.add_argument('queryFile', type=str, default=None)
     parser.add_argument('subjectFile', type=str, default=None)
-    parser.add_argument('-o', '--openCost', type=float, default=10)
-    parser.add_argument('-e', '--extendCost', type=float, default=0.5)
+    parser.add_argument('-o', '--openCost', type=float, default=11)
+    parser.add_argument('-e', '--extendCost', type=float, default=1)
     #     if o in ('-d', 'debug'):
     #         debug = 1
     args = parser.parse_args()
@@ -294,7 +294,7 @@ def main():
     if not args.queryFile or not args.subjectFile:
         raise RuntimeError("No query or subject sequence supplied")
  
-    alignedQuery, alignedSubject = nw(readFASTA(args.queryFile), readFASTA(args.subjectFile),  matrix.blosum50, args.openCost, args.extendCost)
+    alignedQuery, alignedSubject = nw(readFASTA(args.queryFile), readFASTA(args.subjectFile),  matrix.blosum62, args.openCost, args.extendCost)
     printFASTA(queryFile, alignedQuery, subjectFile, alignedSubject)
 
 if __name__ == '__main__':
