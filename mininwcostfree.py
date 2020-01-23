@@ -7,6 +7,7 @@ import logging
 import io
 import matrix
 
+logging.basicConfig()
 logger = logging.getLogger('mininwcostfree')
 logger.setLevel(logging.INFO)
 def readFASTA(file):
@@ -33,12 +34,12 @@ def argmax(args):
     for i in range(len(args)):
         if best == None or args[i] > args[best]:
             best = i
-    logging.debug("Argmax %s best index: %d best value %d" % (args, i, args[best]))
+    logger.debug("Argmax %s best index: %d best value %d" % (args, i, args[best]))
     return best
 
 def printDPMatrix(s1, s2, m):
     s = io.StringIO()
-    s.write("DP matrix")
+    s.write("DP matrix\n")
     s.write("%4s %4s " % (" ", " "))
     for i in range(1, len(m)):
         s.write("%4s " % s1[i-1])
@@ -53,7 +54,7 @@ def printDPMatrix(s1, s2, m):
         for j in range(len(m)):
             s.write("%4d " % m[j][i])
         s.write("\n")
-    logging.debug(s.getvalue())
+    logger.debug(s.getvalue())
 
 def build_align(sequence1, sequence2, M, Ix, Iy, Mbt, Ixbt, Iybt):
     aligned_seq1 = []
