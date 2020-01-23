@@ -6,26 +6,11 @@ import argparse
 import logging
 import io
 import matrix
+from fasta_reader import ReadFASTA
 
 logging.basicConfig()
 logger = logging.getLogger('mininwcostfree')
 logger.setLevel(logging.INFO)
-def readFASTA(file):
-    f = open(file)
-    sequence = []
-    identifier = None
-    while 1:
-        line = f.readline()
-        if line == "":
-            break
-        if line[0] == ">":
-            if identifier:
-                break
-            identifier = line[1:]
-        else:
-            sequence.append(line.strip())
-
-    return "".join(sequence)
 
 
 ## this argmax will return the highest index of the largest value
