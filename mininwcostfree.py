@@ -280,17 +280,15 @@ def printFASTA(queryFile, alignedQuery, subjectFile, alignedSubject, o=sys.stdou
 def main():
     queryFile = None
     subjectFile = None
-    openCost = 12
-    extendCost = 2
     parser = argparse.ArgumentParser("Parse alginment arguments")
     parser.add_argument('queryFile', type=str, default=None)
     parser.add_argument('subjectFile', type=str, default=None)
     parser.add_argument('-o', '--openCost', type=float, default=11)
     parser.add_argument('-e', '--extendCost', type=float, default=1)
-    #     if o in ('-d', 'debug'):
-    #         debug = 1
+    parser.add_argument('-d', dest='debug', action='store_true')
     args = parser.parse_args()
-
+    if args.debug:
+      logger.setLevel(logging.DEBUG)
     if not args.queryFile or not args.subjectFile:
         raise RuntimeError("No query or subject sequence supplied")
  
