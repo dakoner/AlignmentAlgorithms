@@ -6,21 +6,15 @@ import argparse
 import logging
 import io
 import matrix
-from fasta_reader import ReadFASTA
+from fasta_reader import readFASTA
 
 logging.basicConfig()
 logger = logging.getLogger('mininwcostfree')
 logger.setLevel(logging.INFO)
 
 
-## this argmax will return the highest index of the largest value
-def argmax(args):
-    best = None
-    for i in range(len(args)):
-        if best == None or args[i] > args[best]:
-            best = i
-    logger.debug("Argmax %s best index: %d best value %d" % (args, i, args[best]))
-    return best
+def argmax(array):
+    return array.index(max(array))
 
 def printDPMatrix(s1, s2, m):
     s = io.StringIO()
