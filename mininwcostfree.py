@@ -248,6 +248,11 @@ def main():
 
     if args.matrix == 'blosum62':
         matrix = similarity_matrix.blosum62.matrix
+    elif args.matrix == 'dna':
+        matrix = similarity_matrix.dna.matrix
+    else:
+        logger.fatal("Unsupported matrix: %s", args.matrix)
+        sys.exit(1)
     alignedQuery, alignedSubject = nw(readFASTA(args.queryFile), readFASTA(args.subjectFile),  matrix, args.openCost, args.extendCost)
     writeFASTA(queryFile, alignedQuery, subjectFile, alignedSubject)
 
