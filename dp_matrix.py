@@ -4,9 +4,9 @@ import io
 logger = logging.getLogger('dp_matrix')
 logger.setLevel(logging.INFO)
 
-def printDPMatrix(s1, s2, m):
+def printDPMatrix(t, s1, s2, m):
     s = io.StringIO()
-    s.write("DP matrix\n")
+    s.write("DP matrix %s\n" % t)
     s.write("%4s %4s " % (" ", " "))
     for i in range(1, len(m)):
         s.write("%4s " % s1[i-1])

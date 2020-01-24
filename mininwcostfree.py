@@ -7,7 +7,8 @@ import logging
 import io
 import matrix
 from dp_matrix import printDPMatrix
-from fasta_reader import readFASTA
+from dp_matrix import logger as dp_logger
+from fasta import readFASTA, writeFASTA
 
 logging.basicConfig()
 logger = logging.getLogger('mininwcostfree')
@@ -73,12 +74,8 @@ def build_align(sequence1, sequence2, M, Ix, Iy, Mbt, Ixbt, Iybt):
         
         
     ## insert suffix alignment
-    
-##     if debug:
-##         print "Best initial matrix = ", nameset[m]
-    ## nasty and ugly to deal with end-conditions
-##     import pdb
-##     pdb.set_trace()
+
+    #logger.debug("Best initial matrix = %s", nameset[m])
     while i > 0 or j > 0:
         logger.debug("%d %d" % (i,j))
         ## if current matrix is match, emit the relevant sequence
@@ -178,9 +175,9 @@ def nw(seq1, seq2, matrix, d, e):
 
 
     logger.debug("Initial")
-    printDPMatrix(seq1, seq2, M)
-    printDPMatrix(seq1, seq2, Ix)
-    printDPMatrix(seq1, seq2, Iy)
+    printDPMatrix("M", seq1, seq2, M)
+    printDPMatrix("Ix", seq1, seq2, Ix)
+    printDPMatrix("Iy", seq1, seq2, Iy)
 
     for j in range(1, l_2):
         for i in range(1, l_1):
@@ -217,27 +214,20 @@ def nw(seq1, seq2, matrix, d, e):
             logger.debug("IxIx - %s %d + %d = %d" % (seq2[j-1], Iy[i][j-1], -e, Iy[i][j-1] - e))
             logger.debug("Best Iy %s %s" % (setmax, set[setmax]))
             
-    if 1:
-        logger.debug("Final matrix")
-        printDPMatrix(seq1, seq2, M)
-        printDPMatrix(seq1, seq2, Ix)
-        printDPMatrix(seq1, seq2, Iy)
-        logger.debug("Final Traceback")
-        printDPMatrix(seq1, seq2, Mbt)
-        printDPMatrix(seq1, seq2, Ixbt)
-        printDPMatrix(seq1, seq2, Iybt)
+    logger.debug("Final matrix")
+    printDPMatrix("M", seq1, seq2, M)
+    printDPMatrix("Ix", seq1, seq2, Ix)
+    printDPMatrix("Iy", seq1, seq2, Iy)
+    logger.debug("Final Traceback")
+    printDPMatrix("Mbt", seq1, seq2, Mbt)
+    printDPMatrix("Ixbt", seq1, seq2, Ixbt)
+    printDPMatrix("Iybt", seq1, seq2, Iybt)
 
 
     logger.debug("Score %d:", M[l_1-1][l_2-1])
 
     aseq1, aseq2 = build_align(seq1, seq2, M, Ix, Iy, Mbt, Ixbt, Iybt)
     return aseq1, aseq2
-
-def printFASTA(queryFile, alignedQuery, subjectFile, alignedSubject, o=sys.stdout):
-    print(">%s" % queryFile, file=o)
-    print(alignedQuery, file=o)
-    print(">%s" % subjectFile, file=o)
-    print(alignedSubject, file=o)
     
 def main():
     queryFile = None
@@ -251,6 +241,7 @@ def main():
     args = parser.parse_args()
     if args.debug:
       logger.setLevel(logging.DEBUG)
+      dp_logger.setLevel(logging.DEBUG)
     if not args.queryFile or not args.subjectFile:
         raise RuntimeError("No query or subject sequence supplied")
  
