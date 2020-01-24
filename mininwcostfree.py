@@ -90,13 +90,13 @@ def build_align(sequence1, sequence2, M, Ix, Iy, Mbt, Ixbt, Iybt):
                 logger.debug("emit s1 -")
                 s1 = "-"
             else:
-                logger.debug("emit s1", sequence1[i-1])
+                logger.debug("emit s1: %s", sequence1[i-1])
                 s1 = sequence1[i-1]
             if j < 1:
                 logger.debug("emit s2 -")
                 s2 = "-"
             else:
-                logger.debug("emit s2", sequence2[j-1])
+                logger.debug("emit s2: %s", sequence2[j-1])
                 s2 = sequence2[j-1]
 
             ## transition between matrices
