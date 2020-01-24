@@ -5,7 +5,7 @@ import sys
 import argparse
 import logging
 import io
-import matrix
+import similarity_matrix
 from dp_matrix import printDPMatrix
 from dp_matrix import logger as dp_logger
 from fasta import readFASTA, writeFASTA
@@ -237,6 +237,7 @@ def main():
     parser.add_argument('subjectFile', type=str, default=None)
     parser.add_argument('-o', '--openCost', type=float, default=11)
     parser.add_argument('-e', '--extendCost', type=float, default=1)
+    parser.add_argument('-m', '--matrix', type=str, default='blosum62')
     parser.add_argument('-d', dest='debug', action='store_true')
     args = parser.parse_args()
     if args.debug:
@@ -244,8 +245,10 @@ def main():
       dp_logger.setLevel(logging.DEBUG)
     if not args.queryFile or not args.subjectFile:
         raise RuntimeError("No query or subject sequence supplied")
- 
-    alignedQuery, alignedSubject = nw(readFASTA(args.queryFile), readFASTA(args.subjectFile),  matrix.blosum62, args.openCost, args.extendCost)
+
+    if args.matrix == 'blosum62':
+        matrix = similarity_matrix.blosum62.matrix
+    alignedQuery, alignedSubject = nw(readFASTA(args.queryFile), readFASTA(args.subjectFile),  matrix, args.openCost, args.extendCost)
     writeFASTA(queryFile, alignedQuery, subjectFile, alignedSubject)
 
 if __name__ == '__main__':
