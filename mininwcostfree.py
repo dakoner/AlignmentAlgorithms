@@ -248,8 +248,8 @@ def main():
 
     if args.matrix == 'blosum62':
         matrix = similarity_matrix.blosum62.matrix
-    elif args.matrix == 'dna':
-        matrix = similarity_matrix.dna.matrix
+    elif args.matrix == 'dna_identity':
+        matrix = similarity_matrix.dna_identity.matrix
     else:
         logger.fatal("Unsupported matrix: %s", args.matrix)
         sys.exit(1)

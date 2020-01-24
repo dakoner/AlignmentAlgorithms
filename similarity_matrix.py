@@ -36,6 +36,10 @@ class DNAMatrix(SimilarityMatrix):
   def __init__(self):
     super().__init__()
     self.alphabet = "A", "C", "G", "T"
+
+class DNAIdentityMatrix(DNAMatrix):
+  def __init__(self):
+    super().__init__()
     self.matrix = makeIdentity(self.alphabet, 1, -1)
 
 class ProteinMatrix(SimilarityMatrix):
@@ -49,4 +53,4 @@ class Blosum62(ProteinMatrix):
     self.matrix = read_matrix('blosum62.txt')
 
 blosum62 = Blosum62()
-dna = DNAMatrix()
+dna_identity = DNAIdentityMatrix()
