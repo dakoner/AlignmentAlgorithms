@@ -6,6 +6,7 @@ import argparse
 import logging
 import io
 import matrix
+from dp_matrix import printDPMatrix
 from fasta_reader import readFASTA
 
 logging.basicConfig()
@@ -15,25 +16,6 @@ logger.setLevel(logging.INFO)
 
 def argmax(array):
     return array.index(max(array))
-
-def printDPMatrix(s1, s2, m):
-    s = io.StringIO()
-    s.write("DP matrix\n")
-    s.write("%4s %4s " % (" ", " "))
-    for i in range(1, len(m)):
-        s.write("%4s " % s1[i-1])
-    s.write("\n")
-
-    for i in range(len(m[0])):
-        if i == 0:
-            s.write("%4s " % " ")
-        else:
-            s.write("%4s " % s2[i-1])
-
-        for j in range(len(m)):
-            s.write("%4d " % m[j][i])
-        s.write("\n")
-    logger.debug(s.getvalue())
 
 def build_align(sequence1, sequence2, M, Ix, Iy, Mbt, Ixbt, Iybt):
     aligned_seq1 = []
