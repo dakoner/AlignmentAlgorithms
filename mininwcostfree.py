@@ -184,35 +184,35 @@ def nw(seq1, seq2, matrix, d, e):
             logger.debug( "Cell %d %d" % (i,j))
             match = matrix[seq1[i-1],seq2[j-1]]
 
-            set =  (  M[i-1][j-1] + match,
-                     Ix[i-1][j-1] + match,
-                     Iy[i-1][j-1] + match)
-            setmax = argmax((set))
-            M[i][j] = set[setmax]
-            Mbt[i][j] = setmax
+            s =  (  M[i-1][j-1] + match,
+                    Ix[i-1][j-1] + match,
+                    Iy[i-1][j-1] + match)
+            smax = argmax(s)
+            M[i][j] = s[smax]
+            Mbt[i][j] = smax
 
             logger.debug("M M %s %s %d + %d = %d" % (seq1[i-1],seq2[j-1], M[i-1][j-1], match, M[i-1][j-1] + match))
             logger.debug("IxM %s - %d + %d = %d" % (seq1[i-1], Ix[i-1][j-1], match, Ix[i-1][j-1] + match))
             logger.debug("IyM - %s %d + %d = %d" % (seq2[j-1], Iy[i-1][j-1], match, Iy[i-1][j-1] + match))
-            logger.debug("Best M %s %s", setmax, set[setmax])
+            logger.debug("Best M %s %s", smax, s[smax])
                 
-            set =  ( M[i-1][j] - d,
-                    Ix[i-1][j] - e)
-            setmax = argmax(set)
-            Ix[i][j] = set[setmax]
-            Ixbt[i][j] = setmax
+            s =  ( M[i-1][j] - d,
+                   Ix[i-1][j] - e)
+            smax = argmax(s)
+            Ix[i][j] = s[smax]
+            Ixbt[i][j] = smax
             logger.debug("MI %s - %d + %d = %d" % (seq1[i-1], M[i-1][j], -d, M[i-1][j] - d))
             logger.debug("II %s - %d + %d = %d" % (seq1[i-1],Ix[i-1][j], -e,Ix[i-1][j] - e))
-            logger.debug("Best Ix %s %s" % (setmax, set[setmax]))
+            logger.debug("Best Ix %s %s" % (smax, s[smax]))
 
-            set =  ( M[i][j-1] - d,
-                     Iy[i][j-1] - e)
-            setmax = argmax((set))
-            Iy[i][j] = set[setmax]
-            Iybt[i][j] = setmax
+            s =  ( M[i][j-1] - d,
+                   Iy[i][j-1] - e)
+            smax = argmax(s)
+            Iy[i][j] = s[smax]
+            Iybt[i][j] = smax
             logger.debug("M Ix - %s %d + %d = %d" % (seq2[j-1], M[i][j-1], -d, M[i][j-1] - d))
             logger.debug("IxIx - %s %d + %d = %d" % (seq2[j-1], Iy[i][j-1], -e, Iy[i][j-1] - e))
-            logger.debug("Best Iy %s %s" % (setmax, set[setmax]))
+            logger.debug("Best Iy %s %s" % (smax, s[smax]))
             
     logger.debug("Final matrix")
     printDPMatrix("M", seq1, seq2, M)
@@ -246,7 +246,7 @@ def main():
         raise RuntimeError("No query or subject sequence supplied")
  
     alignedQuery, alignedSubject = nw(readFASTA(args.queryFile), readFASTA(args.subjectFile),  matrix.blosum62, args.openCost, args.extendCost)
-    printFASTA(queryFile, alignedQuery, subjectFile, alignedSubject)
+    writeFASTA(queryFile, alignedQuery, subjectFile, alignedSubject)
 
 if __name__ == '__main__':
     main()

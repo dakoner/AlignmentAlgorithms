@@ -1,3 +1,5 @@
+import sys
+
 def readFASTA(file):
     f = open(file)
     sequence = []
